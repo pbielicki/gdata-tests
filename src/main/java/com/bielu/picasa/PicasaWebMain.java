@@ -1,12 +1,10 @@
 package com.bielu.picasa;
 
 import java.net.URL;
-import java.util.Iterator;
+import java.util.HashSet;
+import java.util.Set;
 
 import com.google.gdata.client.photos.PicasawebService;
-import com.google.gdata.data.media.mediarss.MediaContent;
-import com.google.gdata.data.media.mediarss.MediaGroup;
-import com.google.gdata.data.photos.AlbumFeed;
 import com.google.gdata.data.photos.GphotoEntry;
 import com.google.gdata.data.photos.UserFeed;
 
@@ -19,7 +17,7 @@ public class PicasaWebMain {
 
     UserFeed myUserFeed = myService.getFeed(feedUrl, UserFeed.class);
 
-    @SuppressWarnings("rawtypes")
+    /*@SuppressWarnings("rawtypes")
     Iterator<GphotoEntry> it = myUserFeed.getEntries().iterator();
     it.next();
     it.next();
@@ -36,6 +34,16 @@ public class PicasaWebMain {
         }
       } else {
         System.out.println(((com.google.gdata.data.MediaContent) photo.getContent()).getUri());
+      }
+    }*/
+    
+    Set<String> albums = new HashSet<String>();
+    for (GphotoEntry<?> entry : myUserFeed.getEntries()) {
+      String title = entry.getHtmlLink().getHref();
+      if (albums.add(title) == false) {
+        System.err.println(title + " duplicate");
+      } else {
+        System.out.println(title);
       }
     }
   }
